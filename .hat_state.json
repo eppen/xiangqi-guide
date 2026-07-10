@@ -12,9 +12,9 @@
     "directory_name": "xiangqi-guide"
   },
   "xiangqi-guide:33647": {
-    "state": 1,
-    "last_updated": "2026-07-10T17:48:15.271053+08:00",
-    "event": "UserPromptSubmit",
+    "state": 0,
+    "last_updated": "2026-07-10T17:57:43.157387+08:00",
+    "event": "Notification:idle_prompt",
     "directory_name": "xiangqi-guide"
   },
   "xiangqi-guide:67419": {

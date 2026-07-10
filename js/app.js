@@ -696,16 +696,16 @@
         { id: 'bk', type: 'king', color: 'black', col: 4, row: 0 },
         { id: 'ba1', type: 'advisor', color: 'black', col: 3, row: 0 },
         { id: 'ba2', type: 'advisor', color: 'black', col: 5, row: 0 },
-        { id: 'bp1', type: 'pawn', color: 'black', col: 3, row: 2 },
-        { id: 'bp2', type: 'pawn', color: 'black', col: 5, row: 2 },
+        { id: 'bp1', type: 'pawn', color: 'black', col: 3, row: 1 },
+        { id: 'bp2', type: 'pawn', color: 'black', col: 5, row: 1 },
         { id: 'rk', type: 'king', color: 'red', col: 4, row: 9 },
         { id: 'rp', type: 'pawn', color: 'red', col: 4, row: 2 },
-        { id: 'rr', type: 'rook', color: 'red', col: 8, row: 1 }
+        { id: 'rr', type: 'rook', color: 'red', col: 8, row: 2 }
       ],
       solution: [
         { fromCol: 4, fromRow: 2, toCol: 4, toRow: 1 },
         { fromCol: 4, fromRow: 0, toCol: 4, toRow: 1, auto: true, color: 'black' },
-        { fromCol: 8, fromRow: 1, toCol: 4, toRow: 1 }
+        { fromCol: 8, fromRow: 2, toCol: 4, toRow: 2 }
       ]
     },
     {
@@ -720,16 +720,16 @@
         { id: 'bk', type: 'king', color: 'black', col: 4, row: 0 },
         { id: 'ba1', type: 'advisor', color: 'black', col: 3, row: 0 },
         { id: 'ba2', type: 'advisor', color: 'black', col: 5, row: 0 },
-        { id: 'bp1', type: 'pawn', color: 'black', col: 3, row: 2 },
-        { id: 'bp2', type: 'pawn', color: 'black', col: 5, row: 2 },
+        { id: 'bp1', type: 'pawn', color: 'black', col: 3, row: 1 },
+        { id: 'bp2', type: 'pawn', color: 'black', col: 5, row: 1 },
         { id: 'rk', type: 'king', color: 'red', col: 4, row: 9 },
         { id: 'rp', type: 'pawn', color: 'red', col: 4, row: 2 },
-        { id: 'rr', type: 'rook', color: 'red', col: 0, row: 1 }
+        { id: 'rr', type: 'rook', color: 'red', col: 0, row: 2 }
       ],
       solution: [
         { fromCol: 4, fromRow: 2, toCol: 4, toRow: 1 },
         { fromCol: 4, fromRow: 0, toCol: 4, toRow: 1, auto: true, color: 'black' },
-        { fromCol: 0, fromRow: 1, toCol: 4, toRow: 1 }
+        { fromCol: 0, fromRow: 2, toCol: 4, toRow: 2 }
       ]
     }
   ];
