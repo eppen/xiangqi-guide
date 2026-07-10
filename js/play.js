@@ -19,10 +19,12 @@
   var playResignBtn = document.getElementById('playResignBtn');
   var playDifficulty = document.getElementById('playDifficulty');
   var playSoundToggle = document.getElementById('playSoundToggle');
+  var playAnalyzeBtn = document.getElementById('playAnalyzeBtn');
 
   if (!playBoard) return;
 
   var sound = window.XQSound;
+  var playAnalysis = window.XQPlayAnalysis;
 
   var DIFFICULTY_CONFIG = {
     easy: { maxDepth: 2, timeLimitMs: 800 },
@@ -37,11 +39,81 @@
   var playLastMove = null;
   var playHistory = [];
   var playMoveRecords = [];
+  var playGameMoves = [];
+  var playGameResult = null;
   var playGameOver = false;
   var playAiThinking = false;
   var playWorker = null;
   var playRequestId = 0;
   var playMoveRequestId = 0;
+
+  function getGameLog() {
+    return {
+      startPieces: engine.clonePieces(boardApi.STARTING_POSITION),
+      moves: playGameMoves.map(function (m) {
+        return {
+          color: m.color,
+          fromCol: m.fromCol,
+          fromRow: m.fromRow,
+          toCol: m.toCol,
+          toRow: m.toRow,
+          captured: m.captured,
+          notation: m.notation
+        };
+      }),
+      result: playGameResult
+    };
+  }
+
+  function showAnalyzeButton() {
+    if (!playAnalyzeBtn) return;
+    if (playGameMoves.length > 0) {
+      playAnalyzeBtn.hidden = false;
+      playAnalyzeBtn.disabled = false;
+      playAnalyzeBtn.title = '';
+    } else {
+      playAnalyzeBtn.hidden = false;
+      playAnalyzeBtn.disabled = true;
+      playAnalyzeBtn.title = '步数不足，无法复盘';
+    }
+  }
+
+  function hideAnalyzeButton() {
+    if (!playAnalyzeBtn) {
+      return;
+    }
+    playAnalyzeBtn.hidden = true;
+    playAnalyzeBtn.disabled = false;
+    playAnalyzeBtn.title = '';
+  }
+
+  function exitReviewMode() {
+    if (playAnalysis && playAnalysis.isActive()) {
+      playAnalysis.exit();
+    }
+    var reviewPanel = document.getElementById('playReviewPanel');
+    var moveHistory = document.getElementById('playMoveHistory');
+    if (reviewPanel) reviewPanel.hidden = true;
+    if (moveHistory) moveHistory.hidden = false;
+  }
+
+  function startReviewAnalysis() {
+    if (!playAnalysis || playGameMoves.length === 0) return;
+    if (playAnalysis.start(getGameLog(), {
+      updateWinRateUI: updateWinRateUI,
+      onExit: function () {
+        exitReviewMode();
+        renderPlayBoard();
+        if (playUndoBtn) playUndoBtn.disabled = false;
+        if (playResignBtn) playResignBtn.disabled = playGameOver;
+        if (playGameOver) showAnalyzeButton();
+      }
+    })) {
+      hideAnalyzeButton();
+      if (playUndoBtn) playUndoBtn.disabled = true;
+      if (playResignBtn) playResignBtn.disabled = true;
+    }
+  }
 
   function setPlayStatus(text, type) {
     if (!playStatus) return;
@@ -99,7 +171,7 @@
   function initWorker() {
     if (playWorker) return;
     try {
-      playWorker = new Worker('js/ai-worker.js?v=2');
+      playWorker = new Worker('js/ai-worker.js?v=3');
       playWorker.onmessage = onWorkerMessage;
       playWorker.onerror = onWorkerError;
     } catch (err) {
@@ -311,7 +383,20 @@
       toRow: move.toRow
     };
     playTurn = color === 'red' ? 'black' : 'red';
-    playMoveRecords.push(formatMoveRecord(move, color, result.captured, piecesBefore));
+    var notation = formatMoveRecord(move, color, result.captured, piecesBefore);
+    playMoveRecords.push(notation);
+    playGameMoves.push({
+      color: color,
+      fromCol: move.fromCol,
+      fromRow: move.fromRow,
+      toCol: move.toCol,
+      toRow: move.toRow,
+      captured: result.captured ? {
+        type: result.captured.type,
+        color: result.captured.color
+      } : null,
+      notation: notation
+    });
     renderMoveList();
     playMoveSound(result.captured);
     checkGameEnd();
@@ -355,21 +440,28 @@
     playLegalTargets = [];
 
     if (status.winner === 'red') {
+      playGameResult = { winner: 'red', reason: status.reason || '将死' };
       setPlayStatus('恭喜！你将死电脑，红方获胜！', 'success');
       updateWinRateUI({ red: 100, black: 0 }, '红方胜');
       playGameEndSound('red');
     } else if (status.winner === 'black') {
+      playGameResult = { winner: 'black', reason: status.reason || '将死' };
       setPlayStatus('电脑将死你，黑方获胜。再试一局吧！', 'fail');
       updateWinRateUI({ red: 0, black: 100 }, '黑方胜');
       playGameEndSound('black');
     } else {
+      playGameResult = { winner: null, reason: status.reason || '困毙' };
       setPlayStatus('局面困毙，和棋。', 'success');
       updateWinRateUI({ red: 50, black: 50 }, '和棋');
       playGameEndSound(null);
     }
+    showAnalyzeButton();
+    renderPlayBoard();
   }
 
   function startNewGame() {
+    exitReviewMode();
+    hideAnalyzeButton();
     playPieces = engine.clonePieces(boardApi.STARTING_POSITION);
     playTurn = 'red';
     playSelected = null;
@@ -377,16 +469,20 @@
     playLastMove = null;
     playHistory = [];
     playMoveRecords = [];
+    playGameMoves = [];
+    playGameResult = null;
     playGameOver = false;
     playAiThinking = false;
     resetWinRate();
     setPlayStatus(getTurnStatusText(), '');
+    if (playUndoBtn) playUndoBtn.disabled = false;
+    if (playResignBtn) playResignBtn.disabled = false;
     renderMoveList();
     renderPlayBoard();
   }
 
   function undoMove() {
-    if (playAiThinking || playHistory.length === 0) return;
+    if (playAiThinking || playHistory.length === 0 || (playAnalysis && playAnalysis.isActive())) return;
 
     var steps = playTurn === 'black' ? 2 : 1;
     if (playHistory.length < steps) steps = playHistory.length;
@@ -398,9 +494,12 @@
       playTurn = prev.turn;
       playLastMove = prev.lastMove;
       if (playMoveRecords.length) playMoveRecords.pop();
+      if (playGameMoves.length) playGameMoves.pop();
     }
 
     playGameOver = false;
+    playGameResult = null;
+    hideAnalyzeButton();
     playSelected = null;
     playLegalTargets = [];
     setPlayStatus(getTurnStatusText(), isInCheckNow('red') ? 'check' : '');
@@ -410,19 +509,22 @@
   }
 
   function resignGame() {
-    if (playGameOver) return;
+    if (playGameOver || (playAnalysis && playAnalysis.isActive())) return;
     playGameOver = true;
+    playGameResult = { winner: 'black', reason: '认输' };
     playSelected = null;
     playLegalTargets = [];
     setPlayStatus('你认输了，黑方获胜。', 'fail');
     updateWinRateUI({ red: 0, black: 100 }, '黑方胜');
     playGameEndSound('black');
+    showAnalyzeButton();
     renderPlayBoard();
   }
 
   if (playNewBtn) playNewBtn.addEventListener('click', startNewGame);
   if (playUndoBtn) playUndoBtn.addEventListener('click', undoMove);
   if (playResignBtn) playResignBtn.addEventListener('click', resignGame);
+  if (playAnalyzeBtn) playAnalyzeBtn.addEventListener('click', startReviewAnalysis);
   if (playDifficulty) {
     playDifficulty.addEventListener('change', function () {
       if (!playGameOver && playTurn === 'red') {

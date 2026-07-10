@@ -1338,6 +1338,97 @@ main, header, footer { position: relative; z-index: 1; }
   border-bottom: 1px solid rgba(255,255,255,0.04);
 }
 
+.play-review-panel {
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+  margin-top: 0.25rem;
+}
+
+.play-review-progress-wrap {
+  margin-bottom: 1rem;
+}
+
+.play-review-progress-text {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.play-review-summary {
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+
+.play-review-step-info {
+  padding: 0.75rem 1rem;
+  background: var(--surface-muted, rgba(255,255,255,0.04));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  line-height: 1.55;
+}
+
+.play-review-step-info p {
+  margin: 0.35rem 0 0;
+  color: var(--text-muted);
+}
+
+.play-review-eval,
+.play-review-best {
+  font-size: 0.82rem;
+}
+
+.play-review-quality {
+  margin-top: 0.5rem !important;
+}
+
+.play-review-moves-wrap {
+  margin-bottom: 1rem;
+}
+
+.play-review-moves-wrap h4 {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.play-review-move-list {
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.play-review-exit {
+  width: 100%;
+}
+
+.play-review-note {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 0.75rem;
+  margin-bottom: 0;
+}
+
+.review-tag-good {
+  color: #81c784;
+  font-weight: 600;
+}
+
+.review-tag-inaccuracy {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.review-tag-blunder {
+  color: #e57373;
+  font-weight: 600;
+}
+
+.notation-list .active {
+  color: var(--gold);
+  font-weight: 600;
+}
+
 .cell-marker.legal-move {
   background: var(--move-dot);
   border: 1px solid rgba(76, 175, 80, 0.8);

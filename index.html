@@ -463,11 +463,43 @@
                 <button type="button" class="btn btn-sm btn-primary" id="playNewBtn">新对局</button>
                 <button type="button" class="btn btn-sm btn-outline" id="playUndoBtn">悔棋</button>
                 <button type="button" class="btn btn-sm btn-outline" id="playResignBtn">认输</button>
+                <button type="button" class="btn btn-sm btn-outline" id="playAnalyzeBtn" hidden>复盘分析</button>
               </div>
 
-              <div class="play-move-history">
+              <div class="play-move-history" id="playMoveHistory">
                 <h4>走法记录</h4>
                 <div class="play-move-list" id="playMoveList"></div>
+              </div>
+
+              <div class="play-review-panel" id="playReviewPanel" hidden>
+                <div class="play-review-progress-wrap" id="playReviewProgressWrap">
+                  <p class="play-review-progress-text" id="playReviewProgressText">正在分析…</p>
+                  <div class="progress-bar"><div class="progress-fill" id="playReviewProgress"></div></div>
+                </div>
+                <div class="play-review-body" id="playReviewBody" hidden>
+                  <p class="play-review-summary" id="playReviewSummary"></p>
+                  <div class="play-review-step-info" id="playReviewStepInfo"></div>
+                  <div class="play-review-controls replay-controls">
+                    <button type="button" class="ctrl-btn" id="playReviewFirst" title="回到开局" aria-label="回到开局">
+                      <svg viewBox="0 0 24 24"><path d="M6 6v12l8-6-8-6zm10 0v12h2V6h-2z"/></svg>
+                    </button>
+                    <button type="button" class="ctrl-btn" id="playReviewPrev" title="上一手" aria-label="上一手">
+                      <svg viewBox="0 0 24 24"><path d="M6 6v12l10-6-10-6z"/></svg>
+                    </button>
+                    <button type="button" class="ctrl-btn" id="playReviewNext" title="下一手" aria-label="下一手">
+                      <svg viewBox="0 0 24 24"><path d="M6 6v12l10-6-10-6z" transform="scale(-1,1) translate(-24,0)"/></svg>
+                    </button>
+                    <button type="button" class="ctrl-btn" id="playReviewLast" title="跳到终局" aria-label="跳到终局">
+                      <svg viewBox="0 0 24 24"><path d="M10 6v12l8-6-8-6zm10 0v12h2V6h-2z" transform="scale(-1,1) translate(-24,0)"/></svg>
+                    </button>
+                  </div>
+                  <div class="play-review-moves-wrap">
+                    <h4>完整棋谱</h4>
+                    <ol class="notation-list play-review-move-list" id="playReviewMoveList"></ol>
+                  </div>
+                  <button type="button" class="btn btn-sm btn-outline play-review-exit" id="playReviewExitBtn">退出分析</button>
+                </div>
+                <p class="play-review-note">基于本地引擎估算，仅供参考</p>
               </div>
             </div>
           </div>
@@ -591,6 +623,7 @@
   <script src="js/engine.js?v=2"></script>
   <script src="js/sound.js?v=1"></script>
   <script src="js/app.js?v=3"></script>
-  <script src="js/play.js?v=3"></script>
+  <script src="js/play-analysis.js?v=1"></script>
+  <script src="js/play.js?v=4"></script>
 </body>
 </html>
