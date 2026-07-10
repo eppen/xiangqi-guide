@@ -2,7 +2,9 @@
 
 面向中国象棋初学者的静态学习站点，介绍棋盘规则、棋子走法，以及常用制胜杀法。
 
-在线访问：https://eppen.github.io/xiangqi-guide/
+在线访问：https://xiangqi.eppencn.com（GitHub Pages 自定义域名）
+
+备用地址：https://eppen.github.io/xiangqi-guide/
 
 ## 内容模块
 
@@ -23,6 +25,32 @@ python3 -m http.server 8080
 ```
 
 浏览器访问 http://localhost:8080
+
+## 自定义域名（xiangqi.eppencn.com）
+
+站点通过 GitHub Pages 发布，仓库根目录 [`CNAME`](CNAME) 已配置二级域名。
+
+### 1. GitHub 仓库设置
+
+推送代码后，在 GitHub 打开 **Settings → Pages → Custom domain**，填入：
+
+```text
+xiangqi.eppencn.com
+```
+
+保存后等待 DNS 检查通过，并勾选 **Enforce HTTPS**。
+
+### 2. 域名 DNS 配置（eppencn.com 服务商处）
+
+添加一条 **CNAME** 记录：
+
+| 类型 | 主机记录 | 记录值 |
+|------|----------|--------|
+| CNAME | `xiangqi` | `eppen.github.io` |
+
+> 项目站点（`username.github.io/repo`）的 CNAME 目标为 **`eppen.github.io`**，不要写成带路径的地址。
+
+DNS 生效后（通常几分钟到几小时），GitHub 会自动签发 HTTPS 证书。
 
 ## 技术栈
 
