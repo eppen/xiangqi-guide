@@ -611,20 +611,20 @@
   var PUZZLES = [
     {
       id: 'pz1',
-      title: '车五进二',
+      title: '车五进一',
       difficulty: '入门',
       mateIn: 1,
-      desc: '红先胜。中路车进两步吃掉黑将，士来不及防守。',
-      hint: '五路车从九宫前两格，一举吃进底线。',
+      desc: '红先胜。五路车已控中路，再进一步即可绝杀。',
+      hint: '五路车从将帅正前方一步，直取黑将。',
       pieces: [
         { id: 'bk', type: 'king', color: 'black', col: 4, row: 0 },
         { id: 'ba1', type: 'advisor', color: 'black', col: 3, row: 0 },
         { id: 'ba2', type: 'advisor', color: 'black', col: 5, row: 0 },
         { id: 'rk', type: 'king', color: 'red', col: 4, row: 9 },
-        { id: 'rr', type: 'rook', color: 'red', col: 4, row: 2 }
+        { id: 'rr', type: 'rook', color: 'red', col: 4, row: 1 }
       ],
       solution: [
-        { fromCol: 4, fromRow: 2, toCol: 4, toRow: 0 }
+        { fromCol: 4, fromRow: 1, toCol: 4, toRow: 0 }
       ]
     },
     {
@@ -632,8 +632,8 @@
       title: '炮二平五',
       difficulty: '入门',
       mateIn: 1,
-      desc: '红先胜。底线炮平至中路，直接吃掉黑将。',
-      hint: '二路炮平到五路，黑将无法逃脱。',
+      desc: '红先胜。底线炮隔士平中，一步轰将成杀。',
+      hint: '二路炮平到五路，以黑士为炮架绝杀。',
       pieces: [
         { id: 'bk', type: 'king', color: 'black', col: 4, row: 0 },
         { id: 'ba1', type: 'advisor', color: 'black', col: 3, row: 0 },
@@ -667,7 +667,7 @@
       title: '兵五进一',
       difficulty: '入门',
       mateIn: 1,
-      desc: '红先胜。过河兵前进一步，吃掉黑将。',
+      desc: '红先胜。过河兵前进一步，直取黑将。',
       hint: '五路兵已贴近九宫，再进一步成杀。',
       pieces: [
         { id: 'bk', type: 'king', color: 'black', col: 4, row: 0 },
@@ -685,20 +685,20 @@
       title: '车兵联杀',
       difficulty: '进阶',
       mateIn: 2,
-      desc: '红先胜。先进兵逼将，再车入肋道绝杀。',
-      hint: '第一步进兵将军逼将上移，第二步车占中路绝杀。',
+      desc: '红先胜。先进兵将军，诱士吃兵，再车平底线绝杀。',
+      hint: '第一步兵进一将军，黑将被迫吃兵；第二步车从九路平至五路吃将。',
       pieces: [
         { id: 'bk', type: 'king', color: 'black', col: 4, row: 0 },
         { id: 'ba1', type: 'advisor', color: 'black', col: 3, row: 0 },
         { id: 'ba2', type: 'advisor', color: 'black', col: 5, row: 0 },
         { id: 'rk', type: 'king', color: 'red', col: 4, row: 9 },
-        { id: 'rp', type: 'pawn', color: 'red', col: 4, row: 3 },
-        { id: 'rr', type: 'rook', color: 'red', col: 8, row: 3 }
+        { id: 'rp', type: 'pawn', color: 'red', col: 4, row: 2 },
+        { id: 'rr', type: 'rook', color: 'red', col: 8, row: 1 }
       ],
       solution: [
-        { fromCol: 4, fromRow: 3, toCol: 4, toRow: 2 },
+        { fromCol: 4, fromRow: 2, toCol: 4, toRow: 1 },
         { fromCol: 4, fromRow: 0, toCol: 4, toRow: 1, auto: true, color: 'black' },
-        { fromCol: 8, fromRow: 3, toCol: 4, toRow: 3 }
+        { fromCol: 8, fromRow: 1, toCol: 4, toRow: 1 }
       ]
     },
     {
@@ -706,20 +706,20 @@
       title: '车从侧翼杀',
       difficulty: '进阶',
       mateIn: 2,
-      desc: '红先胜。侧翼车配合中路兵，两步成杀。',
-      hint: '兵在中路将军逼将，车从左侧肋道切入绝杀。',
+      desc: '红先胜。中路兵将军，诱将吃兵，再车从一路平中吃将。',
+      hint: '第一步兵进一将军，黑将被迫吃兵；第二步车从一路平至五路吃将。',
       pieces: [
         { id: 'bk', type: 'king', color: 'black', col: 4, row: 0 },
         { id: 'ba1', type: 'advisor', color: 'black', col: 3, row: 0 },
         { id: 'ba2', type: 'advisor', color: 'black', col: 5, row: 0 },
         { id: 'rk', type: 'king', color: 'red', col: 4, row: 9 },
-        { id: 'rp', type: 'pawn', color: 'red', col: 4, row: 3 },
-        { id: 'rr', type: 'rook', color: 'red', col: 0, row: 3 }
+        { id: 'rp', type: 'pawn', color: 'red', col: 4, row: 2 },
+        { id: 'rr', type: 'rook', color: 'red', col: 0, row: 1 }
       ],
       solution: [
-        { fromCol: 4, fromRow: 3, toCol: 4, toRow: 2 },
+        { fromCol: 4, fromRow: 2, toCol: 4, toRow: 1 },
         { fromCol: 4, fromRow: 0, toCol: 4, toRow: 1, auto: true, color: 'black' },
-        { fromCol: 0, fromRow: 3, toCol: 4, toRow: 3 }
+        { fromCol: 0, fromRow: 1, toCol: 4, toRow: 1 }
       ]
     }
   ];
@@ -979,6 +979,7 @@
   var replayLastBtn = document.getElementById('replayLast');
   var replaySpeedInput = document.getElementById('replaySpeed');
   var replaySpeedLabel = document.getElementById('replaySpeedLabel');
+  var replaySoundToggle = document.getElementById('replaySoundToggle');
   var sound = window.XQSound;
   var replayEngine = window.XQEngine;
 
@@ -1056,8 +1057,28 @@
     updateReplayBadge();
   }
 
+  function updateReplaySoundToggle() {
+    if (!replaySoundToggle || !sound) return;
+    var on = sound.isEnabled();
+    replaySoundToggle.textContent = on ? '音效开' : '音效关';
+    replaySoundToggle.setAttribute('aria-pressed', on ? 'true' : 'false');
+    replaySoundToggle.setAttribute('aria-label', on ? '音效已开启' : '音效已关闭');
+  }
+
+  function initReplaySoundToggle() {
+    if (!replaySoundToggle || !sound) return;
+    updateReplaySoundToggle();
+    replaySoundToggle.addEventListener('click', function () {
+      sound.ensureContext();
+      sound.setEnabled(!sound.isEnabled());
+      updateReplaySoundToggle();
+      if (sound.isEnabled()) sound.playSelect();
+    });
+  }
+
   function playReplayMoveSound(moveIndex) {
     if (!sound) return;
+    sound.ensureContext();
     var replay = getReplay();
     var m = replay.moves[moveIndex];
     if (!m) return;
@@ -1103,6 +1124,7 @@
       stopReplay();
       return;
     }
+    if (sound) sound.ensureContext();
     var replay = getReplay();
     if (replayStep >= replay.moves.length) {
       replayStep = 0;
@@ -1116,8 +1138,7 @@
         stopReplay();
         return;
       }
-      replayStep++;
-      renderReplayBoard();
+      goToReplayStep(replayStep + 1);
     }, interval);
   }
 
@@ -1148,11 +1169,13 @@
       replaySelector.appendChild(btn);
     });
 
+    initReplaySoundToggle();
+
     if (replayPlayBtn) replayPlayBtn.addEventListener('click', playReplay);
-    if (replayFirstBtn) replayFirstBtn.addEventListener('click', function () { stopReplay(); goToReplayStep(0); });
-    if (replayPrevBtn) replayPrevBtn.addEventListener('click', function () { stopReplay(); goToReplayStep(replayStep - 1); });
-    if (replayNextBtn) replayNextBtn.addEventListener('click', function () { stopReplay(); goToReplayStep(replayStep + 1); });
-    if (replayLastBtn) replayLastBtn.addEventListener('click', function () { stopReplay(); goToReplayStep(getReplay().moves.length); });
+    if (replayFirstBtn) replayFirstBtn.addEventListener('click', function () { if (sound) sound.ensureContext(); stopReplay(); goToReplayStep(0); });
+    if (replayPrevBtn) replayPrevBtn.addEventListener('click', function () { if (sound) sound.ensureContext(); stopReplay(); goToReplayStep(replayStep - 1); });
+    if (replayNextBtn) replayNextBtn.addEventListener('click', function () { if (sound) sound.ensureContext(); stopReplay(); goToReplayStep(replayStep + 1); });
+    if (replayLastBtn) replayLastBtn.addEventListener('click', function () { if (sound) sound.ensureContext(); stopReplay(); goToReplayStep(getReplay().moves.length); });
 
     if (replaySpeedInput && replaySpeedLabel) {
       replaySpeedInput.addEventListener('input', function () {

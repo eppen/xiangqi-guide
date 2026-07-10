@@ -1603,6 +1603,11 @@ main, header, footer { position: relative; z-index: 1; }
   accent-color: var(--lacquer);
 }
 
+.replay-sound-toggle {
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
 .notation-list-wrap h4 {
   font-size: 0.9rem;
   color: var(--text-muted);
