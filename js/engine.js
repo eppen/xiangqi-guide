@@ -407,7 +407,11 @@
           reason: '将死'
         };
       }
-      return { over: true, winner: null, reason: '困毙' };
+      return {
+        over: true,
+        winner: colorToMove === 'red' ? 'black' : 'red',
+        reason: '困毙'
+      };
     }
     return { over: false, winner: null, reason: null };
   }

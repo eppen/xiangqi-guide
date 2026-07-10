@@ -441,17 +441,25 @@
 
     if (status.winner === 'red') {
       playGameResult = { winner: 'red', reason: status.reason || '将死' };
-      setPlayStatus('恭喜！你将死电脑，红方获胜！', 'success');
+      if (status.reason === '困毙') {
+        setPlayStatus('黑方困毙，红方获胜！', 'success');
+      } else {
+        setPlayStatus('恭喜！你将死电脑，红方获胜！', 'success');
+      }
       updateWinRateUI({ red: 100, black: 0 }, '红方胜');
       playGameEndSound('red');
     } else if (status.winner === 'black') {
       playGameResult = { winner: 'black', reason: status.reason || '将死' };
-      setPlayStatus('电脑将死你，黑方获胜。再试一局吧！', 'fail');
+      if (status.reason === '困毙') {
+        setPlayStatus('红方困毙，黑方获胜。再试一局吧！', 'fail');
+      } else {
+        setPlayStatus('电脑将死你，黑方获胜。再试一局吧！', 'fail');
+      }
       updateWinRateUI({ red: 0, black: 100 }, '黑方胜');
       playGameEndSound('black');
     } else {
-      playGameResult = { winner: null, reason: status.reason || '困毙' };
-      setPlayStatus('局面困毙，和棋。', 'success');
+      playGameResult = { winner: null, reason: status.reason || '和棋' };
+      setPlayStatus('和棋。', 'success');
       updateWinRateUI({ red: 50, black: 50 }, '和棋');
       playGameEndSound(null);
     }
