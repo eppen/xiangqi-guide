@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="中国象棋初学者指南：棋盘棋子介绍、基本规则、走法详解、常用制胜杀法，以及残局练习题和记谱动画回放。">
+  <title>象棋入门 · 规则与制胜之法</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem('xqguide-theme');
+        if (theme === 'light' || theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', theme);
+        }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <div class="paper-texture" aria-hidden="true"></div>
+  <div class="ink-wash" aria-hidden="true"></div>
+
+  <header class="site-header" id="top">
+    <nav class="nav container">
+      <a class="logo" href="#top">
+        <span class="logo-piece">将</span>
+        <span class="logo-text">象棋入门</span>
+      </a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about">认识象棋</a></li>
+        <li><a href="#pieces">棋子走法</a></li>
+        <li><a href="#rules">基本规则</a></li>
+        <li><a href="#tactics">制胜杀法</a></li>
+        <li><a href="#opening">开局要点</a></li>
+        <li><a href="#puzzles">残局练习</a></li>
+        <li><a href="#replay">记谱回放</a></li>
+        <li><a href="#endgame">残局常识</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button type="button" class="theme-toggle" id="themeToggle" aria-label="切换亮色主题" title="切换亮色主题">
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm0-14a1 1 0 0 1-1-1V1a1 1 0 1 1 2 0v1a1 1 0 0 1-1 1Zm0 20a1 1 0 0 1-1-1v-1a1 1 0 1 1 2 0v1a1 1 0 0 1-1 1ZM4.22 6.22a1 1 0 0 1 0-1.41l.71-.71a1 1 0 1 1 1.41 1.41l-.71.71a1 1 0 0 1-1.41 0ZM18.66 20.66a1 1 0 0 1 0-1.41l.71-.71a1 1 0 0 1 1.41 1.41l-.71.71a1 1 0 0 1-1.41 0ZM1 13a1 1 0 0 1 0-2h1a1 1 0 1 1 0 2H1Zm20 0a1 1 0 0 1 0-2h1a1 1 0 1 1 0 2h-1ZM4.22 19.78a1 1 0 0 1-1.41 0l-.71-.71a1 1 0 0 1 1.41-1.41l.71.71a1 1 0 0 1 0 1.41ZM18.66 5.34a1 1 0 0 1-1.41 0l-.71-.71a1 1 0 1 1 1.41-1.41l.71.71a1 1 0 0 1 0 1.41Z"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 14.5A8.5 8.5 0 0 1 9.5 3 7 7 0 1 0 21 14.5Z"/></svg>
+        </button>
+        <button class="nav-toggle" id="navToggle" aria-label="打开菜单">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-text">
+          <p class="hero-tag">Xiangqi for Beginners</p>
+          <h1>楚河汉界<br><span class="highlight">一步入门，百战知胜</span></h1>
+          <p class="hero-desc">
+            中国象棋是流传千年的二人对弈棋艺。红黑双方各十六子，在九道直线、十条横线的棋盘上斗智斗勇。
+            本指南专为初学者编写，带你认识棋子、掌握规则，并学会实战中常用的制胜杀法。
+          </p>
+          <div class="hero-actions">
+            <a href="#about" class="btn btn-primary">开始了解</a>
+            <a href="#tactics" class="btn btn-outline">学习杀法</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat"><strong>32</strong><span>枚棋子</span></div>
+            <div class="stat"><strong>7</strong><span>种兵种</span></div>
+            <div class="stat"><strong>千年</strong><span>棋艺传承</span></div>
+          </div>
+        </div>
+        <div class="hero-board-wrap">
+          <div class="board-frame">
+            <div id="heroBoard" class="chess-board" aria-label="象棋棋盘示意图"></div>
+            <div class="board-label">楚河 · 汉界</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="section" id="about">
+      <div class="container">
+        <header class="section-header">
+          <span class="section-tag">壹 · 认识</span>
+          <h2>什么是中国象棋</h2>
+          <p>与围棋、国际象棋并列的世界三大棋类之一，讲究攻守平衡、弃子争先。</p>
+        </header>
+
+        <div class="about-grid">
+          <article class="card">
+            <div class="card-icon">棋</div>
+            <h3>棋盘结构</h3>
+            <p>棋盘由九条竖线、十条横线交叉组成，中间空白地带为<strong>「楚河汉界」</strong>，将棋盘分为南北两半。双方各占半边，各有「九宫」（将帅活动范围）。</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">子</div>
+            <h3>棋子阵营</h3>
+            <p>红方先行，黑方后行。双方各 16 枚棋子：将帅 1、士 2、象 2、马 2、车 2、炮 2、兵卒 5。棋子摆在<strong>交叉点</strong>上，而非格子内。</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">胜</div>
+            <h3>胜负判定</h3>
+            <p>将死对方将帅即获胜。此外，对方认输、超时、长捉（或长将）犯规判负，或无子可动（困毙）亦判负。和棋情形包括双方同意、重复局面、六十回合无吃子等。</p>
+          </article>
+          <article class="card">
+            <div class="card-icon">道</div>
+            <h3>象棋哲学</h3>
+            <p>象棋讲究<strong>先势后子</strong>——子力（棋子价值）固然重要，但位置、主动权、将帅安全更为关键。初学者应先守稳，再学攻杀。</p>
+          </article>
+        </div>
+
+        <div class="notation-box">
+          <h3>棋盘坐标速记</h3>
+          <p>红方视角：纵线从右至左记为 <strong>一至九路</strong>，横线从下至上记为 <strong>一至十路</strong>。黑方纵线从左至右为 <strong>1–9 路</strong>。记谱示例：炮二平五（红炮从二路平移到五路）。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pieces -->
+    <section class="section section-alt" id="pieces">
+      <div class="container">
+        <header class="section-header">
+          <span class="section-tag">贰 · 走法</span>
+          <h2>七种棋子怎么走</h2>
+          <p>点击棋子卡片，在右侧棋盘查看走法示意。</p>
+        </header>
+
+        <div class="pieces-layout">
+          <div class="piece-cards" id="pieceCards">
+            <button class="piece-card active" data-piece="king">
+              <span class="piece-char red">帅</span>
+              <span class="piece-char black">将</span>
+              <strong>将 / 帅</strong>
+              <span class="piece-value">核心价值</span>
+            </button>
+            <button class="piece-card" data-piece="advisor">
+              <span class="piece-char red">仕</span>
+              <span class="piece-char black">士</span>
+              <strong>士 / 仕</strong>
+              <span class="piece-value">九宫护卫</span>
+            </button>
+            <button class="piece-card" data-piece="elephant">
+              <span class="piece-char red">相</span>
+              <span class="piece-char black">象</span>
+              <strong>象 / 相</strong>
+              <span class="piece-value">不能过河</span>
+            </button>
+            <button class="piece-card" data-piece="horse">
+              <span class="piece-char red">马</span>
+              <span class="piece-char black">马</span>
+              <strong>马</strong>
+              <span class="piece-value">八面威风</span>
+            </button>
+            <button class="piece-card" data-piece="rook">
+              <span class="piece-char red">车</span>
+              <span class="piece-char black">车</span>
+              <strong>车</strong>
+              <span class="piece-value">最强子力</span>
+            </button>
+            <button class="piece-card" data-piece="cannon">
+              <span class="piece-char red">炮</span>
+              <span class="piece-char black">炮</span>
+              <strong>炮</strong>
+              <span class="piece-value">隔子打子</span>
+            </button>
+            <button class="piece-card" data-piece="pawn">
+              <span class="piece-char red">兵</span>
+              <span class="piece-char black">卒</span>
+              <strong>兵 / 卒</strong>
+              <span class="piece-value">过河变强</span>
+            </button>
+          </div>
+
+          <div class="piece-detail">
+            <div id="pieceBoard" class="chess-board" aria-label="棋子走法示意棋盘"></div>
+            <div class="piece-info" id="pieceInfo">
+              <h3>将 / 帅</h3>
+              <p>只能在九宫内移动，每次走直线一步（横或竖）。将帅不能对面（同一纵线无子相隔时，中间必须有棋子间隔）。</p>
+              <ul class="piece-tips">
+                <li>九宫内活动范围：3×3 格</li>
+                <li>被将军时必须应将</li>
+                <li>将帅对脸为违规（不可直接照面）</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rules -->
+    <section class="section" id="rules">
+      <div class="container">
+        <header class="section-header">
+          <span class="section-tag">叁 · 规则</span>
+          <h2>对局基本规则</h2>
+          <p>掌握这些规则，就能开始你的第一盘棋。</p>
+        </header>
+
+        <div class="rules-timeline">
+          <div class="rule-step">
+            <div class="step-num">01</div>
+            <div class="step-body">
+              <h3>红先黑后</h3>
+              <p>红方先走一步，双方交替行棋，每步只能动一枚棋子。先走方略有先手优势，因此开局尤为重要。</p>
+            </div>
+          </div>
+          <div class="rule-step">
+            <div class="step-num">02</div>
+            <div class="step-body">
+              <h3>吃子与将军</h3>
+              <p>棋子走到对方棋子位置即可吃掉该子。若走子后直接威胁对方将帅，称为<strong>「将军」</strong>。被将军方必须立即应将：移动将帅、用棋子挡住、或吃掉攻击棋子。</p>
+            </div>
+          </div>
+          <div class="rule-step">
+            <div class="step-num">03</div>
+            <div class="step-body">
+              <h3>马脚与象眼</h3>
+              <p>马走日字，但<strong>马脚</strong>（马前进方向相邻点）有子则无法跳跃，称「蹩马腿」。象走田字，<strong>象眼</strong>（田字中心）有子则不能飞象，称「塞象眼」。</p>
+            </div>
+          </div>
+          <div class="rule-step">
+            <div class="step-num">04</div>
+            <div class="step-body">
+              <h3>炮的特殊吃法</h3>
+              <p>炮移动时与车相同，走直线任意步。但吃子时必须<strong>隔一个棋子</strong>（炮架）才能打到目标，这个「炮架」可以是己方或对方棋子。</p>
+            </div>
+          </div>
+          <div class="rule-step">
+            <div class="step-num">05</div>
+            <div class="step-body">
+              <h3>兵卒过河</h3>
+              <p>兵卒未过河前只能向前走一步。过河后可向前或左右走，但<strong>不能后退</strong>。过河兵价值大幅提升，常是残局制胜关键。</p>
+            </div>
+          </div>
+          <div class="rule-step">
+            <div class="step-num">06</div>
+            <div class="step-body">
+              <h3>禁止着法</h3>
+              <p>不能送将（走完己方将帅暴露给对方攻击）。长将、长捉等反复威胁通常判负。具体规则以比赛规程为准，休闲对局双方可协商。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="value-table-wrap">
+          <h3>子力价值参考（初学者版）</h3>
+          <table class="value-table">
+            <thead>
+              <tr><th>棋子</th><th>近似分值</th><th>说明</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>车</td><td>9</td><td>最强子力，控制直线，攻守兼备</td></tr>
+              <tr><td>炮</td><td>4.5</td><td>开局稍弱，中局发力，需炮架</td></tr>
+              <tr><td>马</td><td>4</td><td>灵活多变，怕蹩腿，需好位置</td></tr>
+              <tr><td>士象</td><td>2</td><td>防守为主，残局有时可弃</td></tr>
+              <tr><td>兵卒</td><td>1→2</td><td>过河后价值上升，逼近九宫更凶</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tactics -->
+    <section class="section section-alt" id="tactics">
+      <div class="container">
+        <header class="section-header">
+          <span class="section-tag">肆 · 制胜</span>
+          <h2>常用制胜杀法</h2>
+          <p>实战中最常见的杀形与战术手段，学会识别就能大幅提升胜率。</p>
+        </header>
+
+        <div class="tactics-layout">
+          <aside class="tactic-list" id="tacticList">
+            <button class="tactic-btn active" data-tactic="mate-horse-cannon">
+              <span class="tactic-name">马后炮</span>
+              <span class="tactic-level">经典杀</span>
+            </button>
+            <button class="tactic-btn" data-tactic="mate-double-rook">
+              <span class="tactic-name">双车错</span>
+              <span class="tactic-level">经典杀</span>
+            </button>
+            <button class="tactic-btn" data-tactic="mate-double-cannon">
+              <span class="tactic-name">重炮</span>
+              <span class="tactic-level">经典杀</span>
+            </button>
+            <button class="tactic-btn" data-tactic="mate-iron-gate">
+              <span class="tactic-name">铁门栓</span>
+              <span class="tactic-level">经典杀</span>
+            </button>
+            <button class="tactic-btn" data-tactic="mate-sleeve">
+              <span class="tactic-name">闷宫</span>
+              <span class="tactic-level">经典杀</span>
+            </button>
+            <button class="tactic-btn" data-tactic="tactic-fork">
+              <span class="tactic-name">捉双</span>
+              <span class="tactic-level">战术</span>
+            </button>
+            <button class="tactic-btn" data-tactic="tactic-discovered">
+              <span class="tactic-name">抽将</span>
+              <span class="tactic-level">战术</span>
+            </button>
+            <button class="tactic-btn" data-tactic="tactic-sacrifice">
+              <span class="tactic-name">弃子攻杀</span>
+              <span class="tactic-level">战术</span>
+            </button>
+          </aside>
+
+          <div class="tactic-detail" id="tacticDetail">
+            <div id="tacticBoard" class="chess-board" aria-label="杀法示意棋盘"></div>
+            <div class="tactic-content">
+              <h3 id="tacticTitle">马后炮</h3>
+              <p id="tacticDesc">马在前面限制将帅活动，炮在后方将军，形成绝杀。马充当「炮架」的同时封锁将帅退路，是初学者必须掌握的第一杀法。</p>
+              <div class="tactic-steps" id="tacticSteps">
+                <div class="step-item"><span>①</span>马跳到能将军且限制将帅的位置</div>
+                <div class="step-item"><span>②</span>炮在同一线路后方补一手将军</div>
+                <div class="step-item"><span>③</span>将帅被马封住，无法躲避炮击</div>
+              </div>
+              <div class="tactic-tip" id="tacticTip">
+                <strong>实战提示：</strong>中局时常以马换象士后形成马后炮，注意提前算清炮架位置。
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Opening -->
+    <section class="section" id="opening">
+      <div class="container">
+        <header class="section-header">
+          <span class="section-tag">伍 · 开局</span>
+          <h2>开局三大原则</h2>
+          <p>开局不求赢棋，但求不失先、不出漏子，稳步出子占好位。</p>
+        </header>
+
+        <div class="opening-grid">
+          <article class="opening-card">
+            <div class="opening-num">一</div>
+            <h3>尽快出动车马炮</h3>
+            <p>开局忌频繁动兵卒、士象。应优先出动大子（车、马、炮），抢占河界与要点。常见开局如<strong>中炮局</strong>（炮二平五）、<strong>飞相局</strong>、<strong>仙人指路</strong>（兵三进一）等。</p>
+          </article>
+          <article class="opening-card">
+            <div class="opening-num">二</div>
+            <h3>保护将帅安全</h3>
+            <p>出子进攻的同时，务必保持士象齐全或至少一条防线完整。勿为吃小卒而暴露将帅，勿轻易兑光防守子力。</p>
+          </article>
+          <article class="opening-card">
+            <div class="opening-num">三</div>
+            <h3>争夺中路与河界</h3>
+            <p>中路是攻防枢纽，控制中路炮、河界马往往能获得主动权。记住口诀：<strong>「车占肋，马跳栏，炮打中」</strong>。</p>
+          </article>
+        </div>
+
+        <div class="opening-common">
+          <h3>常见开局一览</h3>
+          <div class="opening-tags">
+            <span class="tag">中炮对屏风马</span>
+            <span class="tag">顺炮直车</span>
+            <span class="tag">飞相进三兵</span>
+            <span class="tag">仙人指路</span>
+            <span class="tag">起马局</span>
+            <span class="tag">过宫炮</span>
+          </div>
+          <p class="opening-note">初学者建议从中炮局入手，变化丰富且便于学习攻杀。每学一种开局，配合复盘理解出子顺序。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Puzzles -->
+    <section class="section" id="puzzles">
+      <div class="container">
+        <header class="section-header">
+          <span class="section-tag">陆 · 练习</span>
+          <h2>残局练习题</h2>
+          <p>红先走棋，找出制胜着法。点击己方棋子选中，再点击目标位置走棋。</p>
+        </header>
+
+        <div class="puzzle-layout">
+          <aside class="puzzle-list" id="puzzleList"></aside>
+
+          <div class="puzzle-workspace">
+            <div class="puzzle-board-wrap">
+              <div id="puzzleBoard" class="chess-board chess-board-interactive" aria-label="残局练习棋盘"></div>
+            </div>
+            <div class="puzzle-panel">
+              <div class="puzzle-meta">
+                <span class="puzzle-difficulty" id="puzzleDifficulty">入门</span>
+                <span class="puzzle-mate" id="puzzleMate">一步杀</span>
+              </div>
+              <h3 id="puzzleTitle">练习题</h3>
+              <p id="puzzleDesc" class="puzzle-desc">红先胜。</p>
+              <div class="puzzle-status" id="puzzleStatus">请选择棋子走棋</div>
+              <div class="puzzle-actions">
+                <button type="button" class="btn btn-sm btn-outline" id="puzzleHint">提示</button>
+                <button type="button" class="btn btn-sm btn-outline" id="puzzleReset">重置</button>
+                <button type="button" class="btn btn-sm btn-primary" id="puzzleNext">下一题</button>
+              </div>
+              <div class="puzzle-progress">
+                <span id="puzzleProgressText">第 1 / 6 题</span>
+                <div class="progress-bar"><div class="progress-fill" id="puzzleProgressFill"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Replay -->
+    <section class="section section-alt" id="replay">
+      <div class="container">
+        <header class="section-header">
+          <span class="section-tag">柒 · 记谱</span>
+          <h2>记谱动画回放</h2>
+          <p>通过经典开局棋谱，逐步演示棋子移动与中国象棋记谱法。</p>
+        </header>
+
+        <div class="replay-layout">
+          <div class="replay-board-wrap">
+            <div class="board-frame">
+              <div id="replayBoard" class="chess-board" aria-label="记谱回放棋盘"></div>
+              <div class="replay-move-badge" id="replayMoveBadge">准备就绪</div>
+            </div>
+          </div>
+
+          <div class="replay-panel">
+            <div class="replay-selector" id="replaySelector"></div>
+
+            <div class="replay-info">
+              <h3 id="replayTitle">中炮对屏风马</h3>
+              <p id="replayDesc">最常见的开局体系，红方中炮直攻，黑方屏风马稳健防守。</p>
+            </div>
+
+            <div class="replay-controls">
+              <button type="button" class="ctrl-btn" id="replayFirst" title="回到开局" aria-label="回到开局">
+                <svg viewBox="0 0 24 24"><path d="M6 6v12l8-6-8-6zm10 0v12h2V6h-2z"/></svg>
+              </button>
+              <button type="button" class="ctrl-btn" id="replayPrev" title="上一手" aria-label="上一手">
+                <svg viewBox="0 0 24 24"><path d="M6 6v12l10-6-10-6z"/></svg>
+              </button>
+              <button type="button" class="ctrl-btn ctrl-btn-play" id="replayPlay" title="播放" aria-label="播放">
+                <svg class="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7-11-7z"/></svg>
+                <svg class="icon-pause" viewBox="0 0 24 24"><path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/></svg>
+              </button>
+              <button type="button" class="ctrl-btn" id="replayNext" title="下一手" aria-label="下一手">
+                <svg viewBox="0 0 24 24"><path d="M6 6v12l10-6-10-6z" transform="scale(-1,1) translate(-24,0)"/></svg>
+              </button>
+              <button type="button" class="ctrl-btn" id="replayLast" title="跳到终局" aria-label="跳到终局">
+                <svg viewBox="0 0 24 24"><path d="M10 6v12l8-6-8-6zm10 0v12h2V6h-2z" transform="scale(-1,1) translate(-24,0)"/></svg>
+              </button>
+            </div>
+
+            <div class="replay-speed">
+              <label for="replaySpeed">播放速度</label>
+              <input type="range" id="replaySpeed" min="500" max="2500" step="250" value="1200">
+              <span id="replaySpeedLabel">1.2 秒/手</span>
+            </div>
+
+            <div class="notation-list-wrap">
+              <h4>棋谱记录</h4>
+              <ol class="notation-list" id="notationList"></ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Endgame -->
+    <section class="section" id="endgame">
+      <div class="container">
+        <header class="section-header">
+          <span class="section-tag">陆 · 残局</span>
+          <h2>残局入门常识</h2>
+          <p>子力减少后，将帅安全与兵卒价值上升，精准计算成为关键。</p>
+        </header>
+
+        <div class="endgame-grid">
+          <article class="endgame-card">
+            <h3>单车难胜士象全</h3>
+            <p>对方士象配合严密时，单车无法将死。需借助己方将帅助攻或等待对方失误。这是残局最基本的和棋定式。</p>
+          </article>
+          <article class="endgame-card">
+            <h3>车兵杀法</h3>
+            <p>车兵对单士或单象，学会「车进将府」「兵入九宫」的配合。车控制将帅活动，兵逼近绝杀，是实战最高频的残局胜法。</p>
+          </article>
+          <article class="endgame-card">
+            <h3>马炮残局</h3>
+            <p>马炮配合可胜士象不全。关键是马封将门、炮打闷宫，或形成马后炮。算清马脚与炮架是成败关键。</p>
+          </article>
+          <article class="endgame-card">
+            <h3>和棋意识</h3>
+            <p>劣势时主动兑子、寻求重复局面或六十回合无吃子和棋。优势时避免无谓兑子，保持进攻子力。</p>
+          </article>
+        </div>
+
+        <div class="practice-box">
+          <h3>给初学者的练习建议</h3>
+          <ol>
+            <li>每天练习 5–10 个<strong>一步杀、两步杀</strong>残局题</li>
+            <li>复盘时重点回顾：是否漏算将军？是否错过捉双？</li>
+            <li>先学杀法再学开局，杀法直观、成就感强</li>
+            <li>与棋力相近者对弈，每盘至少复盘一个关键回合</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="logo-piece">将</span>
+        <div>
+          <strong>象棋入门指南</strong>
+          <p>愿你在楚河汉界间，弈出从容与智慧。</p>
+        </div>
+      </div>
+      <p class="footer-copy">© 2026 象棋初学者指南 · 静态学习站点</p>
+    </div>
+  </footer>
+
+  <script src="js/app.js?v=2"></script>
+</body>
+</html>
