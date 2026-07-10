@@ -611,38 +611,38 @@
   var PUZZLES = [
     {
       id: 'pz1',
-      title: '车五进一',
+      title: '车五进二',
       difficulty: '入门',
       mateIn: 1,
-      desc: '红先胜。用车直接将军，将死黑方。',
-      hint: '同一直线上，车从底部逼近黑将。',
+      desc: '红先胜。中路车进两步吃掉黑将，士来不及防守。',
+      hint: '五路车从九宫前两格，一举吃进底线。',
       pieces: [
         { id: 'bk', type: 'king', color: 'black', col: 4, row: 0 },
         { id: 'ba1', type: 'advisor', color: 'black', col: 3, row: 0 },
         { id: 'ba2', type: 'advisor', color: 'black', col: 5, row: 0 },
         { id: 'rk', type: 'king', color: 'red', col: 4, row: 9 },
-        { id: 'rr', type: 'rook', color: 'red', col: 4, row: 8 }
+        { id: 'rr', type: 'rook', color: 'red', col: 4, row: 2 }
       ],
       solution: [
-        { fromCol: 4, fromRow: 8, toCol: 4, toRow: 1 }
+        { fromCol: 4, fromRow: 2, toCol: 4, toRow: 0 }
       ]
     },
     {
       id: 'pz2',
-      title: '车四平一',
+      title: '炮二平五',
       difficulty: '入门',
       mateIn: 1,
-      desc: '红先胜。车平移将军，黑将被双士封住无路可逃。',
-      hint: '车在黑将正前方横线将军，将帅被士封死。',
+      desc: '红先胜。底线炮平至中路，直接吃掉黑将。',
+      hint: '二路炮平到五路，黑将无法逃脱。',
       pieces: [
         { id: 'bk', type: 'king', color: 'black', col: 4, row: 0 },
         { id: 'ba1', type: 'advisor', color: 'black', col: 3, row: 0 },
         { id: 'ba2', type: 'advisor', color: 'black', col: 5, row: 0 },
         { id: 'rk', type: 'king', color: 'red', col: 4, row: 9 },
-        { id: 'rr', type: 'rook', color: 'red', col: 7, row: 1 }
+        { id: 'rc', type: 'cannon', color: 'red', col: 7, row: 0 }
       ],
       solution: [
-        { fromCol: 7, fromRow: 1, toCol: 4, toRow: 1 }
+        { fromCol: 7, fromRow: 0, toCol: 4, toRow: 0 }
       ]
     },
     {
@@ -650,16 +650,16 @@
       title: '炮五进二',
       difficulty: '入门',
       mateIn: 1,
-      desc: '红先胜。中炮进击，隔卒炮打将，形成绝杀。',
-      hint: '炮沿中路前进，以黑卒为炮架轰将。',
+      desc: '红先胜。中炮以卒为架进击，一步轰将成杀。',
+      hint: '炮在五路进两步，隔卒炮轰黑将。',
       pieces: [
         { id: 'bk', type: 'king', color: 'black', col: 4, row: 0 },
         { id: 'bp', type: 'pawn', color: 'black', col: 4, row: 1 },
         { id: 'rk', type: 'king', color: 'red', col: 4, row: 9 },
-        { id: 'rc', type: 'cannon', color: 'red', col: 4, row: 4 }
+        { id: 'rc', type: 'cannon', color: 'red', col: 4, row: 2 }
       ],
       solution: [
-        { fromCol: 4, fromRow: 4, toCol: 4, toRow: 2 }
+        { fromCol: 4, fromRow: 2, toCol: 4, toRow: 0 }
       ]
     },
     {
@@ -667,17 +667,17 @@
       title: '兵五进一',
       difficulty: '入门',
       mateIn: 1,
-      desc: '红先胜。过河兵前进一步，将死黑将。',
-      hint: '兵在中路前进一步将军，黑将被双士封住。',
+      desc: '红先胜。过河兵前进一步，吃掉黑将。',
+      hint: '五路兵已贴近九宫，再进一步成杀。',
       pieces: [
         { id: 'bk', type: 'king', color: 'black', col: 4, row: 0 },
         { id: 'ba1', type: 'advisor', color: 'black', col: 3, row: 0 },
         { id: 'ba2', type: 'advisor', color: 'black', col: 5, row: 0 },
         { id: 'rk', type: 'king', color: 'red', col: 6, row: 9 },
-        { id: 'rp', type: 'pawn', color: 'red', col: 4, row: 2 }
+        { id: 'rp', type: 'pawn', color: 'red', col: 4, row: 1 }
       ],
       solution: [
-        { fromCol: 4, fromRow: 2, toCol: 4, toRow: 1 }
+        { fromCol: 4, fromRow: 1, toCol: 4, toRow: 0 }
       ]
     },
     {
