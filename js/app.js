@@ -696,8 +696,8 @@
         { id: 'bk', type: 'king', color: 'black', col: 4, row: 0 },
         { id: 'ba1', type: 'advisor', color: 'black', col: 3, row: 0 },
         { id: 'ba2', type: 'advisor', color: 'black', col: 5, row: 0 },
-        { id: 'bp1', type: 'pawn', color: 'black', col: 3, row: 1 },
-        { id: 'bp2', type: 'pawn', color: 'black', col: 5, row: 1 },
+        { id: 'bp1', type: 'pawn', color: 'black', col: 3, row: 2 },
+        { id: 'bp2', type: 'pawn', color: 'black', col: 5, row: 2 },
         { id: 'rk', type: 'king', color: 'red', col: 4, row: 9 },
         { id: 'rp', type: 'pawn', color: 'red', col: 4, row: 2 },
         { id: 'rr', type: 'rook', color: 'red', col: 8, row: 1 }
@@ -720,8 +720,8 @@
         { id: 'bk', type: 'king', color: 'black', col: 4, row: 0 },
         { id: 'ba1', type: 'advisor', color: 'black', col: 3, row: 0 },
         { id: 'ba2', type: 'advisor', color: 'black', col: 5, row: 0 },
-        { id: 'bp1', type: 'pawn', color: 'black', col: 3, row: 1 },
-        { id: 'bp2', type: 'pawn', color: 'black', col: 5, row: 1 },
+        { id: 'bp1', type: 'pawn', color: 'black', col: 3, row: 2 },
+        { id: 'bp2', type: 'pawn', color: 'black', col: 5, row: 2 },
         { id: 'rk', type: 'king', color: 'red', col: 4, row: 9 },
         { id: 'rp', type: 'pawn', color: 'red', col: 4, row: 2 },
         { id: 'rr', type: 'rook', color: 'red', col: 0, row: 1 }

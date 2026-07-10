@@ -1,4 +1,22 @@
 {
+  "xiangqi-guide:23284": {
+    "state": 4,
+    "last_updated": "2026-07-10T17:41:27.762134+08:00",
+    "event": "SessionEnd",
+    "directory_name": "xiangqi-guide"
+  },
+  "xiangqi-guide:33111": {
+    "state": 4,
+    "last_updated": "2026-07-10T17:41:43.784619+08:00",
+    "event": "SessionEnd",
+    "directory_name": "xiangqi-guide"
+  },
+  "xiangqi-guide:33647": {
+    "state": 1,
+    "last_updated": "2026-07-10T17:48:15.271053+08:00",
+    "event": "UserPromptSubmit",
+    "directory_name": "xiangqi-guide"
+  },
   "xiangqi-guide:67419": {
     "state": 0,
     "last_updated": "2026-07-10T14:57:36.757204+08:00",
