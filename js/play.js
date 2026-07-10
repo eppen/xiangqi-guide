@@ -18,8 +18,11 @@
   var playUndoBtn = document.getElementById('playUndoBtn');
   var playResignBtn = document.getElementById('playResignBtn');
   var playDifficulty = document.getElementById('playDifficulty');
+  var playSoundToggle = document.getElementById('playSoundToggle');
 
   if (!playBoard) return;
+
+  var sound = window.XQSound;
 
   var DIFFICULTY_CONFIG = {
     easy: { maxDepth: 2, timeLimitMs: 800 },
@@ -44,6 +47,53 @@
     if (!playStatus) return;
     playStatus.textContent = text;
     playStatus.className = 'play-status' + (type ? ' ' + type : '');
+  }
+
+  function updateSoundToggleUI() {
+    if (!playSoundToggle || !sound) return;
+    var on = sound.isEnabled();
+    playSoundToggle.textContent = on ? '音效开' : '音效关';
+    playSoundToggle.setAttribute('aria-pressed', on ? 'true' : 'false');
+    playSoundToggle.setAttribute('aria-label', on ? '音效已开启' : '音效已关闭');
+  }
+
+  function initSoundToggle() {
+    if (!playSoundToggle || !sound) return;
+    updateSoundToggleUI();
+    playSoundToggle.addEventListener('click', function () {
+      sound.ensureContext();
+      sound.setEnabled(!sound.isEnabled());
+      updateSoundToggleUI();
+      if (sound.isEnabled()) sound.playSelect();
+    });
+  }
+
+  function playMoveSound(captured) {
+    if (!sound) return;
+    sound.ensureContext();
+    if (captured) {
+      sound.playCapture();
+    } else {
+      sound.playMove();
+    }
+    var endStatus = engine.isGameOver(playPieces, playTurn);
+    if (!endStatus.over && engine.isInCheck(playPieces, playTurn)) {
+      window.setTimeout(function () {
+        if (sound.isEnabled()) sound.playCheck();
+      }, 90);
+    }
+  }
+
+  function playGameEndSound(winner) {
+    if (!sound) return;
+    sound.ensureContext();
+    if (winner === 'red') {
+      sound.playWin();
+    } else if (winner === 'black') {
+      sound.playLose();
+    } else {
+      sound.playDraw();
+    }
   }
 
   function initWorker() {
@@ -188,6 +238,7 @@
 
   function onPlayCellClick(col, row) {
     if (playGameOver || playAiThinking || playTurn !== 'red') return;
+    if (sound) sound.ensureContext();
 
     var piece = engine.findPieceAt(playPieces, col, row);
 
@@ -231,6 +282,7 @@
     if (piece && piece.color === 'red') {
       playSelected = piece;
       playLegalTargets = engine.getLegalMovesForPiece(playPieces, piece);
+      if (sound) sound.playSelect();
       renderPlayBoard();
       return;
     }
@@ -261,6 +313,7 @@
     playTurn = color === 'red' ? 'black' : 'red';
     playMoveRecords.push(formatMoveRecord(move, color, result.captured, piecesBefore));
     renderMoveList();
+    playMoveSound(result.captured);
     checkGameEnd();
   }
 
@@ -304,12 +357,15 @@
     if (status.winner === 'red') {
       setPlayStatus('恭喜！你将死电脑，红方获胜！', 'success');
       updateWinRateUI({ red: 100, black: 0 }, '红方胜');
+      playGameEndSound('red');
     } else if (status.winner === 'black') {
       setPlayStatus('电脑将死你，黑方获胜。再试一局吧！', 'fail');
       updateWinRateUI({ red: 0, black: 100 }, '黑方胜');
+      playGameEndSound('black');
     } else {
       setPlayStatus('局面困毙，和棋。', 'success');
       updateWinRateUI({ red: 50, black: 50 }, '和棋');
+      playGameEndSound(null);
     }
   }
 
@@ -360,6 +416,7 @@
     playLegalTargets = [];
     setPlayStatus('你认输了，黑方获胜。', 'fail');
     updateWinRateUI({ red: 0, black: 100 }, '黑方胜');
+    playGameEndSound('black');
     renderPlayBoard();
   }
 
@@ -374,5 +431,6 @@
     });
   }
 
+  initSoundToggle();
   startNewGame();
 })();

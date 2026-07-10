@@ -1176,6 +1176,33 @@ main, header, footer { position: relative; z-index: 1; }
   font-size: 0.85rem;
 }
 
+.play-sound-toggle {
+  margin-left: auto;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.play-sound-toggle:hover {
+  color: var(--text);
+  border-color: var(--gold);
+}
+
+.play-sound-toggle[aria-pressed="true"] {
+  color: var(--gold);
+  border-color: rgba(201, 162, 39, 0.45);
+}
+
+.play-sound-toggle[aria-pressed="false"] {
+  opacity: 0.75;
+}
+
 .play-status {
   padding: 0.85rem 1rem;
   background: var(--surface-muted, rgba(255,255,255,0.04));
