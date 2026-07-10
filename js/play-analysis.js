@@ -5,6 +5,7 @@
 
   var boardApi = global.XQBoard;
   var engine = global.XQEngine;
+  var sound = global.XQSound;
 
   var ANALYSIS_DEPTH = 3;
   var ANALYSIS_TIME_MS = 800;
@@ -198,9 +199,28 @@
     renderMoveList();
   }
 
-  function goToStep(step) {
+  function playReviewMoveSound(moveIndex) {
+    if (!sound || !gameLog) return;
+    var m = gameLog.moves[moveIndex];
+    if (!m) return;
+
+    var piecesBefore = rebuildPosition(moveIndex).pieces;
+    var moveResult = engine.makeMove(engine.clonePieces(piecesBefore), m);
+    if (!moveResult) return;
+
+    var opponent = m.color === 'red' ? 'black' : 'red';
+    var inCheck = engine.isInCheck(moveResult.pieces, opponent);
+    sound.playStepSound(moveResult.captured, inCheck);
+  }
+
+  function goToStep(step, options) {
     if (!gameLog) return;
+    options = options || {};
+    var prevStep = reviewStep;
     reviewStep = Math.max(0, Math.min(step, gameLog.moves.length));
+    if (!options.silent && reviewStep === prevStep + 1 && reviewStep > 0) {
+      playReviewMoveSound(reviewStep - 1);
+    }
     renderReviewUI();
   }
 
@@ -286,8 +306,7 @@
   function onAnalyzeComplete(results) {
     analysisResults = results;
     showProgress(false);
-    reviewStep = gameLog.moves.length;
-    renderReviewUI();
+    goToStep(gameLog.moves.length, { silent: true });
   }
 
   function initAnalyzeWorker() {

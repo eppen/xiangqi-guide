@@ -979,6 +979,8 @@
   var replayLastBtn = document.getElementById('replayLast');
   var replaySpeedInput = document.getElementById('replaySpeed');
   var replaySpeedLabel = document.getElementById('replaySpeedLabel');
+  var sound = window.XQSound;
+  var replayEngine = window.XQEngine;
 
   var currentReplayIndex = 0;
   var replayStep = 0;
@@ -1054,9 +1056,36 @@
     updateReplayBadge();
   }
 
-  function goToReplayStep(step) {
+  function playReplayMoveSound(moveIndex) {
+    if (!sound) return;
     var replay = getReplay();
+    var m = replay.moves[moveIndex];
+    if (!m) return;
+
+    var piecesBefore = clonePieces(replay.startPieces);
+    for (var i = 0; i < moveIndex; i++) {
+      var prev = replay.moves[i];
+      var applied = applyMove(piecesBefore, prev.fromCol, prev.fromRow, prev.toCol, prev.toRow);
+      if (!applied) return;
+      piecesBefore = applied.pieces;
+    }
+
+    var moveResult = applyMove(piecesBefore, m.fromCol, m.fromRow, m.toCol, m.toRow);
+    if (!moveResult) return;
+
+    var opponent = m.color === 'red' ? 'black' : 'red';
+    var inCheck = replayEngine && replayEngine.isInCheck(moveResult.pieces, opponent);
+    sound.playStepSound(moveResult.captured, inCheck);
+  }
+
+  function goToReplayStep(step, options) {
+    options = options || {};
+    var replay = getReplay();
+    var prevStep = replayStep;
     replayStep = Math.max(0, Math.min(step, replay.moves.length));
+    if (!options.silent && replayStep === prevStep + 1 && replayStep > 0) {
+      playReplayMoveSound(replayStep - 1);
+    }
     renderReplayBoard();
   }
 

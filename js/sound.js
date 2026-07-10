@@ -148,6 +148,21 @@
         tone(ac, t, 440, 0.15, 0.08, 'sine');
         tone(ac, t + 0.15, 440, 0.15, 0.08, 'sine');
       });
+    },
+    playStepSound: function (captured, inCheck) {
+      if (!enabled) return;
+      ensureContext();
+      if (captured) {
+        this.playCapture();
+      } else {
+        this.playMove();
+      }
+      if (inCheck) {
+        var self = this;
+        global.setTimeout(function () {
+          if (self.isEnabled()) self.playCheck();
+        }, 90);
+      }
     }
   };
 })(typeof window !== 'undefined' ? window : self);
