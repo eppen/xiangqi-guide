@@ -1040,9 +1040,14 @@ main, header, footer { position: relative; z-index: 1; }
   border-radius: 20px;
 }
 
-.puzzle-difficulty {
+.puzzle-difficulty.category-tactics {
   background: rgba(201, 162, 39, 0.15);
   color: var(--gold);
+}
+
+.puzzle-difficulty.category-endgame {
+  background: rgba(76, 120, 180, 0.15);
+  color: #6fa8dc;
 }
 
 .puzzle-mate {

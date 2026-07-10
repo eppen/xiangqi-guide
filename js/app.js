@@ -612,6 +612,7 @@
     {
       id: 'pz1',
       title: '车五进一',
+      category: '杀法',
       difficulty: '入门',
       mateIn: 1,
       desc: '红先胜。五路车已控中路，再进一步即可绝杀。',
@@ -630,6 +631,7 @@
     {
       id: 'pz2',
       title: '炮二平五',
+      category: '杀法',
       difficulty: '入门',
       mateIn: 1,
       desc: '红先胜。底线炮隔士平中，一步轰将成杀。',
@@ -648,6 +650,7 @@
     {
       id: 'pz3',
       title: '炮五进二',
+      category: '杀法',
       difficulty: '入门',
       mateIn: 1,
       desc: '红先胜。中炮以卒为架进击，一步轰将成杀。',
@@ -665,6 +668,7 @@
     {
       id: 'pz4',
       title: '兵五进一',
+      category: '杀法',
       difficulty: '入门',
       mateIn: 1,
       desc: '红先胜。过河兵前进一步，直取黑将。',
@@ -683,14 +687,17 @@
     {
       id: 'pz5',
       title: '车兵联杀',
+      category: '残局',
       difficulty: '进阶',
       mateIn: 2,
-      desc: '红先胜。先进兵将军，诱士吃兵，再车平底线绝杀。',
-      hint: '第一步兵进一将军，黑将被迫吃兵；第二步车从九路平至五路吃将。',
+      desc: '红先胜。中路兵将军，黑卒封住将门侧翼，老将只能吃兵，再车从九路平中吃将。',
+      hint: '第一步兵进一将军，黑将无路可躲只能吃兵；第二步车从九路平至五路吃将。',
       pieces: [
         { id: 'bk', type: 'king', color: 'black', col: 4, row: 0 },
         { id: 'ba1', type: 'advisor', color: 'black', col: 3, row: 0 },
         { id: 'ba2', type: 'advisor', color: 'black', col: 5, row: 0 },
+        { id: 'bp1', type: 'pawn', color: 'black', col: 3, row: 1 },
+        { id: 'bp2', type: 'pawn', color: 'black', col: 5, row: 1 },
         { id: 'rk', type: 'king', color: 'red', col: 4, row: 9 },
         { id: 'rp', type: 'pawn', color: 'red', col: 4, row: 2 },
         { id: 'rr', type: 'rook', color: 'red', col: 8, row: 1 }
@@ -704,14 +711,17 @@
     {
       id: 'pz6',
       title: '车从侧翼杀',
+      category: '残局',
       difficulty: '进阶',
       mateIn: 2,
-      desc: '红先胜。中路兵将军，诱将吃兵，再车从一路平中吃将。',
-      hint: '第一步兵进一将军，黑将被迫吃兵；第二步车从一路平至五路吃将。',
+      desc: '红先胜。中路兵将军，黑卒封住将门侧翼，老将只能吃兵，再车从一路平中吃将。',
+      hint: '第一步兵进一将军，黑将无路可躲只能吃兵；第二步车从一路平至五路吃将。',
       pieces: [
         { id: 'bk', type: 'king', color: 'black', col: 4, row: 0 },
         { id: 'ba1', type: 'advisor', color: 'black', col: 3, row: 0 },
         { id: 'ba2', type: 'advisor', color: 'black', col: 5, row: 0 },
+        { id: 'bp1', type: 'pawn', color: 'black', col: 3, row: 1 },
+        { id: 'bp2', type: 'pawn', color: 'black', col: 5, row: 1 },
         { id: 'rk', type: 'king', color: 'red', col: 4, row: 9 },
         { id: 'rp', type: 'pawn', color: 'red', col: 4, row: 2 },
         { id: 'rr', type: 'rook', color: 'red', col: 0, row: 1 }
@@ -770,7 +780,11 @@
 
     puzzleTitle.textContent = puzzle.title;
     puzzleDesc.textContent = puzzle.desc;
-    puzzleDifficulty.textContent = puzzle.difficulty;
+    if (puzzleDifficulty) {
+      puzzleDifficulty.textContent = puzzle.category;
+      puzzleDifficulty.className = 'puzzle-difficulty' +
+        (puzzle.category === '残局' ? ' category-endgame' : ' category-tactics');
+    }
     puzzleMate.textContent = puzzle.mateIn === 1 ? '一步杀' : '两步杀';
     puzzleProgressText.textContent = '第 ' + (index + 1) + ' / ' + PUZZLES.length + ' 题';
     puzzleProgressFill.style.width = ((index + 1) / PUZZLES.length * 100) + '%';
@@ -844,7 +858,7 @@
                 var btn = puzzleList.querySelector('.puzzle-item-btn.active');
                 if (btn) btn.classList.add('solved');
               }
-              setPuzzleStatus('恭喜！两步杀成，干得漂亮！', 'success');
+              setPuzzleStatus('恭喜！残局杀成，干得漂亮！', 'success');
             } else {
               setPuzzleStatus('黑方已应，请继续找出红方杀着', '');
             }
@@ -876,7 +890,7 @@
       btn.className = 'puzzle-item-btn' + (i === 0 ? ' active' : '');
       btn.innerHTML =
         '<span class="puzzle-item-title">' + pz.title + '</span>' +
-        '<span class="puzzle-item-meta">' + pz.difficulty + ' · ' + (pz.mateIn === 1 ? '一步杀' : '两步杀') + '</span>';
+        '<span class="puzzle-item-meta">' + pz.category + ' · ' + pz.difficulty + ' · ' + (pz.mateIn === 1 ? '一步杀' : '两步杀') + '</span>';
       btn.addEventListener('click', function () {
         loadPuzzle(i);
       });

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="中国象棋初学者指南：棋盘棋子介绍、基本规则、走法详解、常用制胜杀法、残局练习题、记谱回放，以及人机对弈与局面评估。">
+  <meta name="description" content="中国象棋初学者指南：棋盘棋子介绍、基本规则、走法详解、常用制胜杀法、战术与残局练习题、记谱回放，以及人机对弈与局面评估。">
   <title>象棋入门 · 规则与制胜之法</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,7 +36,7 @@
         <li><a href="#rules">基本规则</a></li>
         <li><a href="#tactics">制胜杀法</a></li>
         <li><a href="#opening">开局要点</a></li>
-        <li><a href="#puzzles">残局练习</a></li>
+        <li><a href="#puzzles">战术练习</a></li>
         <li><a href="#play">人机对弈</a></li>
         <li><a href="#replay">记谱回放</a></li>
         <li><a href="#endgame">残局常识</a></li>
@@ -375,9 +375,9 @@
     <section class="section" id="puzzles">
       <div class="container">
         <header class="section-header">
-          <span class="section-tag">陆 · 练习</span>
-          <h2>残局练习题</h2>
-          <p>红先走棋，找出制胜着法。点击己方棋子选中，再点击目标位置走棋。</p>
+          <span class="section-tag">陆 · 战术与残局</span>
+          <h2>战术与残局练习</h2>
+          <p>红先走棋，找出制胜着法。前四题为一步杀法练习，后两题为两步残局杀法。点击己方棋子选中，再点击目标位置走棋。</p>
         </header>
 
         <div class="puzzle-layout">
@@ -385,11 +385,11 @@
 
           <div class="puzzle-workspace">
             <div class="puzzle-board-wrap">
-              <div id="puzzleBoard" class="chess-board chess-board-interactive" aria-label="残局练习棋盘"></div>
+              <div id="puzzleBoard" class="chess-board chess-board-interactive" aria-label="战术与残局练习棋盘"></div>
             </div>
             <div class="puzzle-panel">
               <div class="puzzle-meta">
-                <span class="puzzle-difficulty" id="puzzleDifficulty">入门</span>
+                <span class="puzzle-difficulty category-tactics" id="puzzleDifficulty">杀法</span>
                 <span class="puzzle-mate" id="puzzleMate">一步杀</span>
               </div>
               <h3 id="puzzleTitle">练习题</h3>
@@ -598,7 +598,7 @@
         <div class="practice-box">
           <h3>给初学者的练习建议</h3>
           <ol>
-            <li>每天练习 5–10 个<strong>一步杀、两步杀</strong>残局题</li>
+            <li>每天练习 5–10 道<strong>杀法题</strong>，再练 2–3 道<strong>两步残局</strong></li>
             <li>复盘时重点回顾：是否漏算将军？是否错过捉双？</li>
             <li>先学杀法再学开局，杀法直观、成就感强</li>
             <li>与棋力相近者对弈，每盘至少复盘一个关键回合</li>
@@ -623,7 +623,7 @@
 
   <script src="js/engine.js?v=3"></script>
   <script src="js/sound.js?v=2"></script>
-  <script src="js/app.js?v=7"></script>
+  <script src="js/app.js?v=8"></script>
   <script src="js/play-analysis.js?v=2"></script>
   <script src="js/play.js?v=5"></script>
 </body>
