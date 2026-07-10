@@ -456,8 +456,33 @@
       a.toCol === b.toCol && a.toRow === b.toRow;
   }
 
+  var searchDeadline = 0;
+  var searchAborted = false;
+
+  function isSearchTimedOut() {
+    return searchDeadline > 0 && Date.now() >= searchDeadline;
+  }
+
+  function moveOrderScore(move) {
+    if (!move.captured) return 0;
+    return (PIECE_VALUES[move.captured.type] || 0) + 10000;
+  }
+
+  function sortMovesByCapture(moves) {
+    moves.sort(function (a, b) {
+      return moveOrderScore(b) - moveOrderScore(a);
+    });
+    return moves;
+  }
+
   function findBestMove(pieces, color, depth) {
-    var moves = getLegalMoves(pieces, color);
+    searchDeadline = 0;
+    searchAborted = false;
+    return findBestMoveAtDepth(pieces, color, depth);
+  }
+
+  function findBestMoveAtDepth(pieces, color, depth) {
+    var moves = sortMovesByCapture(getLegalMoves(pieces, color));
     if (moves.length === 0) return { move: null, score: color === 'red' ? -99999 : 99999 };
 
     var maximizing = color === 'red';
@@ -465,8 +490,13 @@
     var bestScore = maximizing ? -Infinity : Infinity;
 
     for (var i = 0; i < moves.length; i++) {
+      if (searchAborted || isSearchTimedOut()) {
+        searchAborted = true;
+        break;
+      }
       var result = makeMove(pieces, moves[i]);
       var score = minimax(result.pieces, depth - 1, -Infinity, Infinity, !maximizing);
+      if (searchAborted) break;
       if (maximizing) {
         if (score > bestScore) {
           bestScore = score;
@@ -478,10 +508,41 @@
       }
     }
 
+    if (searchAborted) return { move: null, score: bestScore };
+    return { move: bestMove, score: bestScore };
+  }
+
+  function findBestMoveTimed(pieces, color, maxDepth, timeLimitMs) {
+    var deadline = Date.now() + (timeLimitMs || 2500);
+    var moves = getLegalMoves(pieces, color);
+    if (moves.length === 0) return { move: null, score: color === 'red' ? -99999 : 99999 };
+
+    var bestMove = moves[0];
+    var bestScore = evaluate(pieces);
+
+    for (var d = 1; d <= maxDepth; d++) {
+      if (Date.now() >= deadline) break;
+      searchDeadline = deadline;
+      searchAborted = false;
+      var result = findBestMoveAtDepth(pieces, color, d);
+      if (!searchAborted && result.move) {
+        bestMove = result.move;
+        bestScore = result.score;
+      }
+      if (searchAborted || Date.now() >= deadline) break;
+    }
+
+    searchDeadline = 0;
+    searchAborted = false;
     return { move: bestMove, score: bestScore };
   }
 
   function minimax(pieces, depth, alpha, beta, maximizing) {
+    if (searchAborted || isSearchTimedOut()) {
+      searchAborted = true;
+      return evaluate(pieces);
+    }
+
     var colorToMove = maximizing ? 'red' : 'black';
     var gameOver = isGameOver(pieces, colorToMove);
     if (gameOver.over) {
@@ -491,12 +552,17 @@
     }
     if (depth === 0) return evaluate(pieces);
 
-    var moves = getLegalMoves(pieces, colorToMove);
+    var moves = sortMovesByCapture(getLegalMoves(pieces, colorToMove));
     if (maximizing) {
       var maxEval = -Infinity;
       for (var i = 0; i < moves.length; i++) {
+        if (searchAborted || isSearchTimedOut()) {
+          searchAborted = true;
+          break;
+        }
         var result = makeMove(pieces, moves[i]);
         var evalScore = minimax(result.pieces, depth - 1, alpha, beta, false);
+        if (searchAborted) break;
         if (evalScore > maxEval) maxEval = evalScore;
         if (evalScore > alpha) alpha = evalScore;
         if (beta <= alpha) break;
@@ -506,8 +572,13 @@
 
     var minEval = Infinity;
     for (var j = 0; j < moves.length; j++) {
+      if (searchAborted || isSearchTimedOut()) {
+        searchAborted = true;
+        break;
+      }
       var res = makeMove(pieces, moves[j]);
       var ev = minimax(res.pieces, depth - 1, alpha, beta, true);
+      if (searchAborted) break;
       if (ev < minEval) minEval = ev;
       if (ev < beta) beta = ev;
       if (beta <= alpha) break;
@@ -538,6 +609,7 @@
     getAdvantageLabel: getAdvantageLabel,
     movesEqual: movesEqual,
     findBestMove: findBestMove,
+    findBestMoveTimed: findBestMoveTimed,
     minimax: minimax
   };
 })(typeof self !== 'undefined' ? self : window);

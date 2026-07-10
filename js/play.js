@@ -21,7 +21,11 @@
 
   if (!playBoard) return;
 
-  var DIFFICULTY_DEPTH = { easy: 2, medium: 3, hard: 4 };
+  var DIFFICULTY_CONFIG = {
+    easy: { maxDepth: 2, timeLimitMs: 800 },
+    medium: { maxDepth: 3, timeLimitMs: 1500 },
+    hard: { maxDepth: 4, timeLimitMs: 2500 }
+  };
 
   var playPieces = [];
   var playTurn = 'red';
@@ -34,6 +38,7 @@
   var playAiThinking = false;
   var playWorker = null;
   var playRequestId = 0;
+  var playMoveRequestId = 0;
 
   function setPlayStatus(text, type) {
     if (!playStatus) return;
@@ -44,11 +49,16 @@
   function initWorker() {
     if (playWorker) return;
     try {
-      playWorker = new Worker('js/ai-worker.js?v=1');
+      playWorker = new Worker('js/ai-worker.js?v=2');
       playWorker.onmessage = onWorkerMessage;
+      playWorker.onerror = onWorkerError;
     } catch (err) {
       playWorker = null;
     }
+  }
+
+  function onWorkerError() {
+    runAiMoveSync();
   }
 
   function onWorkerMessage(e) {
@@ -59,6 +69,8 @@
     }
 
     if (data.action === 'move') {
+      if (data.requestId !== playMoveRequestId) return;
+
       playAiThinking = false;
       if (playGameOver || playTurn !== 'black') return;
 
@@ -76,21 +88,34 @@
     }
   }
 
+  function getDifficultyConfig() {
+    return DIFFICULTY_CONFIG[getDifficulty()] || DIFFICULTY_CONFIG.medium;
+  }
+
+  function runAiMoveSync() {
+    var cfg = getDifficultyConfig();
+    var result = engine.findBestMoveTimed(playPieces, 'black', cfg.maxDepth, cfg.timeLimitMs);
+    playAiThinking = false;
+    if (playGameOver || playTurn !== 'black') return;
+
+    if (result.move) {
+      applyPlayMove(result.move, 'black');
+      updateWinRateFromScore(result.score);
+    } else {
+      checkGameEnd();
+    }
+
+    if (!playGameOver) {
+      setPlayStatus(getTurnStatusText(), isInCheckNow('red') ? 'check' : '');
+    }
+    renderPlayBoard();
+  }
+
   function postWorker(action, extra) {
     initWorker();
     if (!playWorker) {
       if (action === 'move') {
-        var depth = DIFFICULTY_DEPTH[getDifficulty()] || 3;
-        var result = engine.findBestMove(playPieces, 'black', depth);
-        playAiThinking = false;
-        if (result.move && !playGameOver && playTurn === 'black') {
-          applyPlayMove(result.move, 'black');
-          updateWinRateFromScore(result.score);
-        }
-        if (!playGameOver) {
-          setPlayStatus(getTurnStatusText(), isInCheckNow('red') ? 'check' : '');
-        }
-        renderPlayBoard();
+        runAiMoveSync();
       } else if (action === 'eval') {
         var score = engine.evaluate(playPieces);
         updateWinRateFromScore(score);
@@ -99,6 +124,9 @@
     }
 
     playRequestId++;
+    if (action === 'move') {
+      playMoveRequestId = playRequestId;
+    }
     var payload = {
       requestId: playRequestId,
       action: action,
@@ -191,7 +219,11 @@
         playTurn = 'black';
         playAiThinking = true;
         setPlayStatus(getTurnStatusText(), 'thinking');
-        postWorker('move', { depth: DIFFICULTY_DEPTH[getDifficulty()] || 3 });
+        var aiCfg = getDifficultyConfig();
+        postWorker('move', {
+          maxDepth: aiCfg.maxDepth,
+          timeLimitMs: aiCfg.timeLimitMs
+        });
         return;
       }
     }

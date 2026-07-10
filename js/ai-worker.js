@@ -18,8 +18,9 @@ self.onmessage = function (e) {
   }
 
   if (action === 'move') {
-    var depth = data.depth || 3;
-    var result = XQEngine.findBestMove(pieces, 'black', depth);
+    var maxDepth = data.maxDepth || data.depth || 3;
+    var timeLimitMs = data.timeLimitMs || 2500;
+    var result = XQEngine.findBestMoveTimed(pieces, 'black', maxDepth, timeLimitMs);
     var move = result.move;
     self.postMessage({
       requestId: data.requestId,
