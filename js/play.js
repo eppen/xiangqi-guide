@@ -265,6 +265,20 @@
     return playDifficulty.value || 'medium';
   }
 
+  function requestAiMove() {
+    if (playGameOver) return;
+
+    postWorker('eval');
+    playTurn = 'black';
+    playAiThinking = true;
+    setPlayStatus(getTurnStatusText(), 'thinking');
+    var aiCfg = getDifficultyConfig();
+    postWorker('move', {
+      maxDepth: aiCfg.maxDepth,
+      timeLimitMs: aiCfg.timeLimitMs
+    });
+  }
+
   function getTurnStatusText() {
     if (playGameOver) return playStatus.textContent;
     if (playAiThinking) return '电脑思考中…';
@@ -338,15 +352,7 @@
 
         if (playGameOver) return;
 
-        postWorker('eval');
-        playTurn = 'black';
-        playAiThinking = true;
-        setPlayStatus(getTurnStatusText(), 'thinking');
-        var aiCfg = getDifficultyConfig();
-        postWorker('move', {
-          maxDepth: aiCfg.maxDepth,
-          timeLimitMs: aiCfg.timeLimitMs
-        });
+        requestAiMove();
         return;
       }
     }
@@ -490,9 +496,15 @@
   }
 
   function undoMove() {
-    if (playAiThinking || playHistory.length === 0 || (playAnalysis && playAnalysis.isActive())) return;
+    if (playHistory.length === 0 || (playAnalysis && playAnalysis.isActive())) return;
 
-    var steps = playTurn === 'black' ? 2 : 1;
+    playAiThinking = false;
+    playMoveRequestId++;
+
+    // 人机对弈：悔棋回到红方行棋
+    // - 当前轮到红方（刚走完一整回合）→ 撤 2 步（黑应 + 红走）
+    // - 当前轮到黑方（红刚走、AI 未应）→ 撤 1 步（仅红走）
+    var steps = playTurn === 'red' ? 2 : 1;
     if (playHistory.length < steps) steps = playHistory.length;
 
     for (var i = 0; i < steps; i++) {
