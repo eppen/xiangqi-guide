@@ -1155,4 +1155,13 @@
     el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
     observer.observe(el);
   });
+
+  window.XQBoard = {
+    renderBoard: renderBoard,
+    clonePieces: clonePieces,
+    findPieceAt: findPieceAt,
+    applyMove: applyMove,
+    STARTING_POSITION: STARTING_POSITION,
+    PIECE_CHARS: PIECE_CHARS
+  };
 })();

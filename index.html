@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="中国象棋初学者指南：棋盘棋子介绍、基本规则、走法详解、常用制胜杀法，以及残局练习题和记谱动画回放。">
+  <meta name="description" content="中国象棋初学者指南：棋盘棋子介绍、基本规则、走法详解、常用制胜杀法、残局练习题、记谱回放，以及人机对弈与局面评估。">
   <title>象棋入门 · 规则与制胜之法</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,6 +37,7 @@
         <li><a href="#tactics">制胜杀法</a></li>
         <li><a href="#opening">开局要点</a></li>
         <li><a href="#puzzles">残局练习</a></li>
+        <li><a href="#play">人机对弈</a></li>
         <li><a href="#replay">记谱回放</a></li>
         <li><a href="#endgame">残局常识</a></li>
       </ul>
@@ -409,6 +410,70 @@
       </div>
     </section>
 
+    <!-- Play vs AI -->
+    <section class="section section-alt" id="play">
+      <div class="container">
+        <header class="section-header">
+          <span class="section-tag">柒 · 对弈</span>
+          <h2>人机对弈</h2>
+          <p>你执红先行，与电脑黑方对弈。每步走棋后显示局面评估胜率，适合实战练习。</p>
+        </header>
+
+        <div class="play-layout">
+          <div class="play-workspace">
+            <div class="play-board-wrap">
+              <div id="playBoard" class="chess-board chess-board-interactive" aria-label="人机对弈棋盘"></div>
+            </div>
+            <div class="play-panel">
+              <div class="play-meta">
+                <label class="play-difficulty-label" for="playDifficulty">难度</label>
+                <select id="playDifficulty" class="play-difficulty-select" aria-label="选择 AI 难度">
+                  <option value="easy">入门</option>
+                  <option value="medium" selected>中级</option>
+                  <option value="hard">挑战</option>
+                </select>
+              </div>
+
+              <div class="play-status" id="playStatus">红方走棋 — 点击棋子选中，再点击目标位置</div>
+
+              <div class="play-winrate" id="playWinRate" aria-label="局面评估">
+                <div class="play-winrate-header">
+                  <span>局面评估</span>
+                  <span class="winrate-label" id="playWinRateLabel">均势</span>
+                </div>
+                <div class="winrate-row">
+                  <span class="winrate-side red">红</span>
+                  <div class="winrate-track">
+                    <div class="winrate-bar-red" id="playWinRateRedBar" style="width:50%"></div>
+                  </div>
+                  <span class="winrate-pct" id="playWinRateRed">50%</span>
+                </div>
+                <div class="winrate-row">
+                  <span class="winrate-side black">黑</span>
+                  <div class="winrate-track">
+                    <div class="winrate-bar-black" id="playWinRateBlackBar" style="width:50%"></div>
+                  </div>
+                  <span class="winrate-pct" id="playWinRateBlack">50%</span>
+                </div>
+                <p class="winrate-note">基于子力与位置的估算评估，非精确胜率</p>
+              </div>
+
+              <div class="play-actions">
+                <button type="button" class="btn btn-sm btn-primary" id="playNewBtn">新对局</button>
+                <button type="button" class="btn btn-sm btn-outline" id="playUndoBtn">悔棋</button>
+                <button type="button" class="btn btn-sm btn-outline" id="playResignBtn">认输</button>
+              </div>
+
+              <div class="play-move-history">
+                <h4>走法记录</h4>
+                <div class="play-move-list" id="playMoveList"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Replay -->
     <section class="section section-alt" id="replay">
       <div class="container">
@@ -522,6 +587,8 @@
     </div>
   </footer>
 
-  <script src="js/app.js?v=2"></script>
+  <script src="js/engine.js?v=1"></script>
+  <script src="js/app.js?v=3"></script>
+  <script src="js/play.js?v=1"></script>
 </body>
 </html>
